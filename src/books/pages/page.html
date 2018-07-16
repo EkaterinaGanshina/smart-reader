@@ -1,0 +1,35 @@
+<div class="row">
+    <div class="col-xs-12 col-sm-offset-1 col-sm-10 col-lg-offset-2 col-lg-8">
+        <a class="button nav-btn" ng-href="#/books/{{ currentBookId }}">Назад</a>
+        <div class="user-alerter static">
+            <div class="alert alert-danger" ng-if="alerter.error">
+                {{ alerter.error }}
+                <div class="close" aria-label="close" ng-click="alerter.clearAlert()">&times;</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12 col-sm-offset-1 col-sm-10 col-lg-offset-2 col-lg-8 chapter" ng-bind-html="renderHtml(page)"></div>
+</div>
+
+<div class="row">
+    <p class="col-xs-12 text-center marg-top marg-bot">Страница <strong>{{ currentPage }}</strong></p>
+
+    <div class="col-xs-12 col-sm-offset-1 col-sm-10 col-lg-offset-2 col-lg-8 page-controls">
+        <a class="button nav-btn" ng-href="#/books/{{ currentBookId }}/pages/{{ previousPage }}"
+           ng-if="previousPage > 1">Предыдущая</a>
+        <a class="button nav-btn" ng-href="#/books/{{ currentBookId }}/pages/{{ nextPage }}"
+           ng-show="nextPage < pagesNumber">Следующая</a>
+
+        <div class="to-page">
+            <span>Перейти на страницу </span>
+            <input type="text" class="form-control" ng-model="userPage" ng-change="checkPageNumber()">
+            <button type="button" ng-click="goToPage()" class="btn btn-default" ng-disabled="isOkBtnDisabled">ОК</button>
+        </div>
+
+        <a class="button nav-btn" ng-href="#/books/{{ currentBookId }}/pages/{{ pagesNumber - 1 }}"
+           ng-hide="currentPage == pagesNumber-1">В конец</a>
+    </div>
+</div>

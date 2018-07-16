@@ -1,0 +1,45 @@
+﻿<div class="book-detail row">
+    <div class="col-xs-12">
+        <a class="button back" href="#/books">Назад</a>
+        <div class="user-alerter">
+            <div class="alert alert-danger" ng-if="alerter.error">
+                {{ alerter.error }}
+                <div class="close" aria-label="close" ng-click="alerter.clearAlert()">&times;</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="book-detail row">
+    <div class="col-sm-3 col-lg-4">
+        <img ng-src='{{ book.cover }}'/>
+    </div>
+    <div class="col-sm-9 col-lg-8">
+        <h3 class="title">{{ book.title }}</h3>
+        <p class="author">{{ book.name }} {{ book.lastName }}</p>
+        <p ng-show="book.annotation">{{ book.annotation }}</p>
+        <p ng-show="book.publishHouse">Издательство: {{ book.publishHouse }}</p>
+        <p ng-show="book.publishYear">Год издания: {{ book.publishYear }}</p>
+        <p>Количество страниц на сайте: {{ book.pagesCount }}</p>
+        <div class="buttons">
+            <a class="btn btn-primary read" href="#/books/{{ book.bookId }}/pages/1">Читать</a>
+            <a class="button pull-right pointer" ng-click="open()">Удалить</a>
+            <a class="button pull-right" ng-href="#/books/{{ book.bookId }}/edit" title="Редактировать описание">Редактировать</a>
+            <a class="button pull-right pointer" ng-if="book.isFavorite === '0'" ng-click="toggleFav()">Добавить в Избранное</a>
+            <a class="button pull-right pointer" ng-if="book.isFavorite === '1'" ng-click="toggleFav()">Удалить из Избранного</a>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="delete-book">
+    <div class="modal-header">
+        <h3 class="modal-title">Удалить книгу</h3>
+    </div>
+    <div class="modal-body">
+        <p>Вы действительно хотите удалить книгу "{{ book.title }}"?</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="deleteBook()">Да</button>
+        <button class="button" type="button" ng-click="cancelModal()">Отмена</button>
+    </div>
+</script>

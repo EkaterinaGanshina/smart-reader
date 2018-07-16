@@ -1,0 +1,93 @@
+<div class="upload-book">
+    <div class="row">
+        <div class="col-xs-12 col-md-10 col-md-offset-1">
+            <h2>Загрузить книгу</h2>
+            <p class="help-block">Обязательные для заполнения поля помечены *</p>
+
+            <div class="user-alerter static">
+                <div class="alert alert-danger" ng-if="alerter.error">
+                    {{ alerter.error }}
+                    <div class="close" aria-label="close" ng-click="alerter.clearAlert()">&times;</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form ng-submit="submit()" role="form" name="uploadBook" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-xs-12 col-md-4 col-md-offset-1">
+                <div class="form-group">
+                    <label for="title">Название книги *</label>
+                    <input type="text" ng-model="book.title" required class="form-control" id="title" name="title"
+                           ng-maxlength="100" ng-pattern="/^[A-Za-zА-Яа-я0-9- ]+$/">
+                </div>
+                
+                <div class="form-group">
+                    <label for="author">Автор *</label>
+                    <select class="form-control" id="author" required name="author" ng-model="book.authorId"
+                            ng-options="obj.authorId as obj.lastName + ' ' + obj.name for obj in authors">
+                        <option disabled value="">Выберите автора...</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="annotation">Аннотация</label>
+                    <textarea class="form-control noresize" rows="6" id="annotation" ng-maxlength="1000"
+                              ng-model="book.annotation" ng-pattern="/^\S[\s\S]+/"></textarea>
+                </div>
+            </div>  
+    
+            <div class="col-xs-12 col-md-4 col-md-offset-1">
+                <div class="form-group">
+                    <button type="button" id="book-file" name="file" required class="btn btn-default"
+                            ngf-select ng-model="files[0]" ngf-accept="'.fb2'" ngf-max-size="20MB">Выбрать файл книги</button>
+                    <span class="file-sign" ng-show="!files[0].name">Файл не выбран</span>
+                    <span class="file-sign" ng-show="files[0].name">{{ files[0].name }}</span>
+                    <p class="help-block">Книга в формате fb2, не более 20 MB *</p>
+                </div>
+                
+                <div class="form-group cover-file input-group">
+                    <button type="button" name="cover" id="cover-file" class="btn btn-default"
+                            ngf-select ng-model="files[1]" ngf-accept="'image/jpeg,image/jpg,image/png'"
+                            ngf-max-size="2MB">Выбрать файл обложки</button>
+                    <span class="file-sign" ng-show="!files[1].name">Файл не выбран</span>
+                    <span class="file-sign" ng-show="files[1].name">{{ files[1].name }}</span>
+                    <p class="help-block">Изображение обложки, не более 2 MB *</p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="publish">Издательство</label>
+                    <input type="text" ng-model="book.publishHouse" ng-pattern="/[A-Za-zА-Яа-я0-9- ]+/"
+                           ng-minlength="3" ng-maxlength="50"
+                           class="form-control" id="publish" placeholder="Издательство" name="publish"/>
+                    <p class="help-block">Название издательства без кавычек</p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="year">Год публикации</label>
+                    <input type="text" ng-model="book.publishYear" class="form-control" id="year" name="year"
+                           placeholder="Год публикации" ng-minlength="4" ng-maxlength="4"
+                           ng-pattern="/^\d{3}$|^1\d{3}$|^20\d{2}$/"/>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-xs-12 col-md-10 col-md-offset-1 marg-bot">
+                <input type='submit' ng-disabled="!uploadBook.$valid || isPreloaderShown"
+                       value="Загрузить" class="btn btn-primary"/>
+                <div class="css-preloader" ng-show="isPreloaderShown">
+                    <div class="dot-preloader-1"></div>
+                    <div class="dot-preloader-2"></div>
+                    <div class="dot-preloader-3"></div>
+                    <div class="dot-preloader-4"></div>
+                    <div class="dot-preloader-5"></div>
+                    <div class="dot-preloader-6"></div>
+                    <div class="dot-preloader-7"></div>
+                    <div class="dot-preloader-8"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+    
+</div>

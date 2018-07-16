@@ -1,0 +1,371 @@
+html,
+body {
+    font-size: 14px;
+}
+
+body {
+    background-color: #fcfcfc;
+}
+
+a,
+a:focus,
+a:hover {
+    text-decoration: none;
+}
+
+/* noscript styles */
+
+.nojs-alert {
+    width: 60%;
+    font-size: 18px;
+    display: flex;
+    height: calc(100vh - 62px);
+    align-items: center;
+}
+
+/* end of noscript styles */
+
+.pointer {
+    cursor: pointer;
+}
+
+.user-alerter {
+    margin: 20px 0;
+    position: absolute;
+    width: 100%;
+    z-index: 100;
+}
+
+.user-alerter.static {
+    position: static;
+}
+
+.form-control:focus {
+    border-color: #6b6b6b;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(68, 68, 68, 0.5);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(68, 68, 68, 0.5);
+}
+
+.navbar .navbar-brand {
+    font-size: 1.2rem;
+}
+
+.navbar a {
+    font-size: 1rem;
+}
+
+.navbar .navbar-toggle {
+    border: 1px solid #d9230f;
+}
+
+.navbar .navbar-toggle .icon-bar {
+    background-color: #d9230f;
+}
+
+.navbar-nav > li > a:focus,
+.navbar-nav > li > a:hover {
+    background-color: #fff;
+}
+
+.header .container {
+    padding: 10px 0 6px 0;
+}
+
+.header {
+    box-shadow: 0 4px 4px -4px rgba(0, 0, 0, .15);
+    background-color: #fff;
+    margin-bottom: 0;
+    height: 62px;
+}
+
+.title {
+    font-family: "Verdana", "Arial", sans-serif;
+    margin: 0;
+    font-size: 1.25rem;
+    line-height: 1.25;
+}
+
+.bookshelf {
+    margin: 30px 0;
+}
+
+.bookshelf .button {
+    color: #fcfcfc;
+}
+
+.book-col {
+    height: 330px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.bookshelf .author,
+.bookshelf .title,
+.bookshelf .book-cover {
+    text-align: center;
+}
+
+.bookshelf .book-cover {
+    overflow: hidden;
+}
+
+.bookshelf .author {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.bookshelf .author a {
+    color: #444;
+}
+
+.bookshelf .book-cover a {
+    display: inline-block;
+    box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2);
+}
+
+.bookshelf .book-cover a:hover {
+    box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.2);
+}
+
+.bookshelf .book-cover img {
+    width: auto;
+    height: 100%;
+    max-height: 220px;
+}
+
+.bookshelf .title {
+    margin-top: 1rem;
+    max-height: 50px;
+    overflow: hidden;
+}
+
+.book-detail h3,
+.book-detail p {
+    cursor: default;
+}
+
+.book-detail img {
+    width: 90%;
+}
+
+.book-detail .back {
+    margin: 15px 0;
+}
+
+.form-control {
+    font-size: 0.95rem;
+}
+
+.btn {
+    min-width: 52px;
+}
+
+.button {
+    border: 1px solid #444;
+    border-radius: 4px;
+    color: #444;
+    text-align: center;
+    display: inline-block;
+    margin: 0;
+    font-size: 1rem;
+    height: 36px;
+    line-height: 36px;
+    padding: 0 12px;
+    box-sizing: border-box;
+    vertical-align: middle;
+    min-width: 52px;
+}
+
+.book-detail .buttons {
+    margin-top: 30px;
+}
+
+.book-detail .buttons .button.pull-right {
+    margin-right: 10px;
+}
+
+.book-detail .delete {
+    cursor: pointer;
+}
+
+.bookshelf .edit, .bookshelf .delete {
+    position: absolute;
+    right: 15px;
+    color: #777;
+}
+
+.chapter-title {
+    font-size: 36px;
+}
+
+.chapter {
+    font-size: 1.12rem;
+    padding: 10px 0;
+}
+
+.chapter p {
+    padding: 4px 0;
+    margin-bottom: 3px;
+}
+
+.nav-btn {
+    margin: 15px 0;
+}
+
+.author {
+    font-style: italic;
+    padding: 5px 0;
+}
+
+.upload-book .cover-file {
+    margin-top: 20px;
+}
+
+.upload-book .help-block {
+    margin-bottom: 15px;
+}
+
+form .ng-dirty.ng-invalid {
+    border: 1px solid #d60c0f;
+}
+
+.marg-top {
+    margin-top: 30px;
+}
+
+.marg-bot {
+    margin-bottom: 30px;
+}
+
+.noresize {
+    resize: none;
+}
+
+.bookshelf .add-book {
+    margin: 0 0 0 2.5em;
+}
+
+.authors .button {
+    background-color: #fff;
+}
+
+.authors table {
+    cursor: default;
+    color: #333;
+}
+
+.authors .name {
+    min-width: 110px;
+}
+
+.authors .surname {
+    min-width: 140px;
+}
+
+.authors .birth,
+.authors .decease {
+    width: 140px;
+}
+
+.authors .actions {
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.authors .actions .button {
+    cursor: pointer;
+    padding: 0 0.5em;
+    min-width: auto;
+    height: 26px;
+    line-height: 26px;
+    border-color: transparent;
+    background-color: transparent;
+    color: #aaa;
+    transition: color 0.3s;
+}
+
+.authors .search, .bookshelf .search {
+    width: 250px;
+    display: inline-block;
+    margin: 0 10px;
+}
+
+.form-add-author {
+    margin: 15px 0;
+}
+
+.form-add-author .buttons {
+    margin-top: 15px;
+}
+
+.form-add-author .buttons .button {
+    margin-left: 10px;
+}
+
+.form-add-author label {
+    display: block;
+}
+
+.form-edit-author label {
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.form-edit-author .actions {
+    padding-top: 5px;
+}
+
+.form-edit-author .actions .btn:first-child {
+    margin-right: 15px;
+}
+
+.app-modal-window .modal-dialog {
+    width: 450px;
+}
+
+.modal-footer {
+    padding: 15px 20px;
+}
+
+.modal-footer .button {
+    margin-left: 5px;
+}
+
+.file-sign {
+    margin-left: 10px;
+}
+
+.page-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.page-controls .to-page {
+    width: 50%;
+    display: flex;
+    align-items: center;
+}
+
+.page-controls .to-page input {
+    width: 100px;
+    margin: 0 10px;
+}
+
+@media screen and (min-width: 1366px) {
+    .book-col {
+        width: 20%;
+    }
+}
+
+@media screen and (min-width: 1600px) {
+    html,
+    body {
+        font-size: 16px;
+    }
+
+    .button {
+        font-size: 0.85rem;
+    }
+}

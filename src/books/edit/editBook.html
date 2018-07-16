@@ -1,0 +1,81 @@
+<div class="upload-book">
+    <div class="row">
+        <div class="col-xs-12 col-md-2 col-md-offset-1 marg-top">
+            <a class="button" ng-href="#/books/">Все книги</a>
+        </div>
+
+        <div class="col-xs-12 col-md-6">
+            <h2>Редактировать информацию о книге</h2>
+
+            <div class="user-alerter">
+                <div class="alert alert-danger" ng-if="alerter.error">
+                    {{ alerter.error }}
+                    <div class="close" aria-label="close" ng-click="alerter.clearAlert()">&times;</div>
+                </div>
+            </div>
+
+            <p class="help-block marg-bot">Обязательные для заполнения поля помечены *</p>
+
+            <form ng-submit="save()" role="form" name="editBook">
+                <div class="form-group">
+                    <label for="title">Название книги *</label>
+                    <input type="text" ng-model="book.title" required class="form-control" id="title"
+                           placeholder="Название" name="title"
+                           ng-pattern="/^[A-Za-zА-Яа-я0-9- ]+$/" ng-maxlength="100">
+                </div>
+
+                <div class="form-group">
+                    <label for="author">Автор *</label>
+                    <select class="form-control" id="author" ng-model="book.authorId" ng-required name="author"
+                            ng-options="item.authorId as item.name + ' ' + item.lastName for item in authors"></select>
+                </div>
+
+                <div class="form-group cover-file input-group">
+                    <button type="button" name="cover" id="cover-file" class="btn btn-default"
+                            ngf-select ng-model="files[0]" ngf-accept="'image/jpeg,image/jpg,image/png'"
+                            ngf-max-size="2MB">Выбрать файл обложки</button>
+                    <span class="file-sign" ng-show="!files[0].name">Файл не выбран</span>
+                    <span class="file-sign" ng-show="files[0].name">{{ files[0].name }}</span>
+                    <p class="help-block">Загрузить новую обложку книги, не более 2 MB</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="annotation">Аннотация</label>
+                    <textarea class="form-control noresize" rows="5" id="annotation"
+                              ng-model="book.annotation" ng-pattern="/^\S[\s\S]+/" ng-maxlength="1000"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="publish">Издательство</label>
+                    <input type="text" ng-model="book.publishHouse" class="form-control" id="publish"
+                           placeholder="Издательство" name="publish" ng-maxlength="50" ng-minlength="3"
+                           ng-pattern="/[A-Za-zА-Яа-я0-9- ]+/"/>
+                    <p class="help-block">Название издательства без кавычек</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="year">Год публикации</label>
+                    <input type="text" ng-model="book.publishYear" class="form-control" id="year"
+                           placeholder="Год публикации" ng-maxlength="4" ng-minlength="3" name="year"
+                           ng-pattern="/^\d{3}$|^1\d{3}$|^20\d{2}$/"/>
+                </div>
+
+                <div class="marg-top marg-bot">
+                    <input type="submit" id="btn-save" value="Сохранить" class="btn btn-primary"
+                           ng-disabled="!editBook.$valid"/>
+                    <a class="button" ng-href="#/books/{{ book.bookId }}">Отмена</a>
+                    <div class="css-preloader" ng-show="isPreloaderShown">
+                        <div class="dot-preloader-1"></div>
+                        <div class="dot-preloader-2"></div>
+                        <div class="dot-preloader-3"></div>
+                        <div class="dot-preloader-4"></div>
+                        <div class="dot-preloader-5"></div>
+                        <div class="dot-preloader-6"></div>
+                        <div class="dot-preloader-7"></div>
+                        <div class="dot-preloader-8"></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

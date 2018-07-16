@@ -1,0 +1,140 @@
+<div class="row authors">
+    <div class="col-xs-12">
+        <div class="user-alerter">
+            <div class="alert alert-danger" ng-if="alerter.error">
+                {{ alerter.error }}
+                <div class="close" aria-label="close" ng-click="alerter.clearAlert()">&times;</div>
+            </div>
+            <div class="alert alert-success" ng-if="alerter.success">
+                {{ alerter.success }}
+                <div class="close" data-dismiss="alert" aria-label="close" ng-click="alerter.clearAlert()">&times;</div>
+            </div>
+        </div>
+
+        <button class="btn btn-default marg-top" ng-click="isCollapsed = !isCollapsed">Добавить автора</button>
+
+        <label class="marg-top pull-right">Поиск
+            <input type="text" class="form-control search" ng-model="searchKeyword"
+                   placeholder="Начните ввод сиволов..."/>
+        </label>
+
+        <div ng-show="!isCollapsed" class="row">
+            <div class="col-xs-12 col-lg-10 col-lg-offset-1">
+                <form class="form-add-author" name="addAuthorForm">
+                    <p class="help-block">Обязательные для заполнения поля помечены *</p>
+
+                    <div class="row">
+                        <div class="col-xs-12 col-md-4">
+                            <label for="new-name">Имя</label>
+                            <input type="text" class="form-control" ng-model="newAuthor.name" id="new-name"
+                                   ng-maxlength="30" ng-pattern="/^[A-Za-zА-Яа-я0-9-]+$/"/>
+                            <label for="new-lastname">Фамилия *</label>
+                            <input type="text" class="form-control" id="new-lastname" required ng-maxlength="50"
+                                   ng-model="newAuthor.lastName" ng-pattern="/^[A-Za-zА-Яа-я0-9-]+$/"/>
+                        </div>
+                        <div class="col-xs-12 col-md-4">
+                            <label for="new-birth">Год рождения *</label>
+                            <input type="text" class="form-control" id="new-birth" ng-model="newAuthor.birthYear"
+                                   required ng-maxlength="4" ng-minlength="3"
+                                   ng-pattern="/^\d{3}$|^1\d{3}$|^20\d{2}$/"/>
+                            <label for="new-decease">Год смерти</label>
+                            <input type="text" class="form-control" id="new-decease"
+                                   ng-model="newAuthor.deceaseYear" ng-maxlength="4" ng-minlength="3"
+                                   ng-pattern="/^\d{3}$|^1\d{3}$|^20\d{2}$/"/>
+                        </div>
+                        <div class="col-xs-12 col-md-4">
+                            <label for="new-description">Дополнительно</label>
+                            <textarea rows="4" class="form-control noresize" id="new-description" ng-maxlength="250"
+                                      ng-model="newAuthor.description" ng-pattern="/^\S[\s\S]+/"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 buttons">
+                            <button type="button" class="btn btn-primary" ng-click="addAuthor(newAuthor)"
+                                    ng-disabled="!addAuthorForm.$valid">Добавить</button>
+                            <button class="button" type="button" ng-click="isCollapsed = true">Закрыть</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-12">
+        <table class="table table-hover table-responsive marg-top">
+            <thead>
+            <tr>
+                <th class="name">Имя</th>
+                <th class="surname">Фамилия</th>
+                <th class="birth">Год рождения</th>
+                <th class="decease">Год смерти</th>
+                <th class="description">Дополнительно</th>
+                <th>Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in authors | filter: searchKeyword" ng-include="getTemplate(item)"></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/ng-template" id="display">
+    <td>{{ item.name }}</td>
+    <td>{{ item.lastName }}</td>
+    <td>{{ item.birthYear }}</td>
+    <td>{{ item.deceaseYear ? item.deceaseYear : '&mdash;' }}</td>
+    <td>{{ item.description }}</td>
+    <td class="actions">
+        <button type="button" class="button" ng-click="editAuthor($index, item)" title="Редактировать автора">
+            <span class="glyphicon glyphicon-edit"></span>
+        </button>
+        <button type="button" class="button" ng-click="deleteAuthor($index)" title="Удалить автора">
+            <span class="glyphicon glyphicon-remove"></span>
+        </button>
+    </td>
+</script>
+
+<script type="text/ng-template" id="edit">
+    <td colspan="6">
+        <form name="editAuthor{{$index}}" class="form-edit-author">
+            <div class="row">
+                <div class="col-xs-3 col-md-2">
+                    <label>Имя</label>
+                    <input type="text" class="form-control" ng-model="selected.name" name="name-{{$index}}"
+                           id="name-{{$index}}" ng-maxlength="30" ng-pattern="/^[A-Za-zА-Яа-я0-9-]+$/"/>
+                </div>
+                <div class="col-xs-3 col-md-2">
+                    <label for="lastname-{{$index}}">Фамилия *</label>
+                    <input type="text" class="form-control" ng-model="selected.lastName" name="lastname-{{$index}}"
+                           required id="lastname-{{$index}}" ng-maxlength="50" ng-pattern="/^[A-Za-zА-Яа-я0-9-]+$/"/>
+                </div>
+                <div class="col-xs-3 col-md-2">
+                    <label>Год рождения *</label>
+                    <input type="text" class="form-control" ng-model="selected.birthYear" name="birth-{{$index}}"
+                           id="birth-{{$index}}" required ng-maxlength="4" ng-pattern="/^\d{3,4}$/"/>
+                </div>
+                <div class="col-xs-3 col-md-2">
+                    <label for="decease-{{$index}}">Год смерти</label>
+                    <input type="text" class="form-control" ng-model="selected.deceaseYear" id="decease-{{$index}}"
+                           name="decease-{{$index}}" ng-maxlength="4" ng-pattern="/^\d{3,4}$/"/>
+                </div>
+                <div class="col-xs-12 col-md-4">
+                    <label for="description-{{$index}}">Дополнительно</label>
+                    <textarea rows="3" class="form-control noresize" ng-model="selected.description"
+                              id="description-{{$index}}" name="description-{{$index}}" ng-pattern="/^\S[\s\S]+/"
+                              ng-maxlength="250"></textarea>
+                </div>
+            </div>
+            <div class="actions">
+                <button type="submit" class="btn btn-primary" ng-click="saveAuthor($index)"
+                    ng-disabled="!editAuthor{{$index}}.$valid">
+                    Сохранить
+                </button>
+                <button type="button" class="btn btn-default" ng-click="reset()">
+                    Отмена
+                </button>
+            </div>
+        </form>
+    </td>
+</script>

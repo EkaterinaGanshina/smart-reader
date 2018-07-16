@@ -1,0 +1,28 @@
+<div class="bookshelf">
+    <h2 class="marg-top marg-bot text-center">Избранные книги</h2>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="user-alerter static">
+                <div class="alert alert-danger" ng-if="alerter.error">
+                    {{ alerter.error }}
+                    <div class="close" aria-label="close" ng-click="alerter.clearAlert()">&times;</div>
+                </div>
+            </div>
+
+            <div class="text-center" ng-if="!books.length">Нет книг для отображения</div>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 book-col"
+             ng-repeat="book in books | filter: searchKeyword" ng-if="books.length">
+            <div class="book-cover">
+                <a href="#/books/{{ book.bookId }}">
+                    <img ng-src='{{ book.cover }}'/>
+                </a>
+            </div>
+            <div class="title">
+                <a href="#/books/{{ book.bookId }}">{{ book.title }}</a>
+            </div>
+            <div class="author">{{ book.name }} {{ book.lastName }}</div>
+        </div>
+    </div>
+</div>
