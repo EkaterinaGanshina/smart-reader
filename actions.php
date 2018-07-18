@@ -20,7 +20,7 @@ if ($class == 'book') {
                 $result = $book->getBook();
 
                 foreach ($result as $key => &$value) {
-                    $value = $value == null ? '' : $value;
+                    $value = $value ?? '';
                 }
                 unset($value);
 
@@ -76,12 +76,9 @@ if ($class == 'book') {
         // author actions
         switch ($action) {
             case 'add':
-                $author = new Author($_REQUEST, $pdo);
-                $result = $author->addAuthor();
-                break;
             case 'edit':
                 $author = new Author($_REQUEST, $pdo);
-                $result = $author->editAuthor();
+                $result = $author->saveAuthor();
                 break;
             case 'delete':
                 $author = new Author($_REQUEST, $pdo);
@@ -94,7 +91,7 @@ if ($class == 'book') {
 
                 foreach ($result as &$author) {
                     foreach ($author as $key => &$value) {
-                        $value = $value == null ? '' : $value;
+                        $value = $value ?? '';
                     }
                 }
                 unset($author);
@@ -128,11 +125,14 @@ if ($class == 'book') {
 echo json_encode($result);
 
 /**
+ * Function handles upload of the new book and its cover
  * @param array $data New book data
  * @param array $files Array with files to upload. Its first element must be fb2 file of the book,
  * the second file is its cover
  * @param PDO $pdo DB driver
+ *
  * @return array Array with results of uploading the book, its cover (if present) and the book id
+ *
  * @throws ValidateException
  */
 function uploadBook($data, $files, $pdo)
@@ -147,9 +147,9 @@ function uploadBook($data, $files, $pdo)
     ];
 
     // first, we must get ID of the new book by saving it to DB
-    $saveResult = $book->saveNewBook();
+    $saveResult = $book->saveBook();
     if ($saveResult['status']) {
-        $newBook['bookId'] = $saveResult['bookId'];
+        $newBook['bookId'] = $book->getLastInsertId();
     } else {
         return $saveResult;
     }
@@ -176,7 +176,7 @@ function uploadBook($data, $files, $pdo)
             'message' => 'Книга успешно сохранена',
             'id' => $newBook['bookId']
         ];
-    };
+    }
 
     return [
         'status' => false,
@@ -185,20 +185,24 @@ function uploadBook($data, $files, $pdo)
 }
 
 /**
+ * Function calls the editing method for the book and also checks if new cover was added
  * @param array $data Edited book data
  * @param array $file New cover for the edited book
  * @param PDO $pdo DB driver
+ *
  * @return array Results of saving either the cover and the book info
+ *
  * @throws ValidateException
  */
-function prepareEditedBook($data, $file, $pdo) {
+function prepareEditedBook($data, $file, $pdo)
+{
     $book = new Book($data, $pdo);
-    $editResult = $book->editBook();
+    $editResult = $book->saveBook();
 
     if (!$editResult['status']) {
         return [
             'status' => false,
-            'message' => 'При сохранении книги произошла ошибка'
+            'message' => $editResult['message']
         ];
     }
 

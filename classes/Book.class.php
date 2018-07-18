@@ -27,14 +27,14 @@ class Book
      */
     public function __construct($data, $pdo)
     {
-        $this->bookId = $data['bookId'] ?? "";
-        $this->authorId = $data['authorId'] ?? "";
-        $this->title = $data['title'] ?? "";
+        $this->bookId = $data['bookId'] ?? '';
+        $this->authorId = $data['authorId'] ?? '';
+        $this->title = $data['title'] ?? '';
         $this->cover = $data['cover'] ?? self::DEFAULT_COVER;
-        $this->annotation = $data['annotation'] ?? "";
-        $this->publishYear = $data['publishYear'] ?? "";
-        $this->publishHouse = $data['publishHouse'] ?? "";
-        $this->isFavorite = $data['isFavorite'] ?? "0";
+        $this->annotation = $data['annotation'] ?? '';
+        $this->publishYear = $data['publishYear'] ?? '';
+        $this->publishHouse = $data['publishHouse'] ?? '';
+        $this->isFavorite = $data['isFavorite'] ?? '0';
         $this->pdo = $pdo;
     }
 
@@ -42,31 +42,55 @@ class Book
      * @return array
      * @throws ValidateException
      */
-    public function saveNewBook()
+    public function saveBook()
     {
         // we need to validate book data
         $this->validateBook();
 
-        $stmt = $this->pdo->prepare('INSERT INTO `books` 
+        $isNewBook = !is_numeric($this->bookId);
+        if ($isNewBook) {
+            $query = 'INSERT INTO `books` 
                 (`authorId`, `title`,`annotation`, `publishHouse`, `publishYear`, `cover`) VALUES 
-                (:author, :title, :annotation, :house, :year, :cover)');
+                (:author, :title, :annotation, :house, :year, :cover)';
+        } else {
+            $query = 'UPDATE `books` SET 
+                `authorId` = :author,
+                `title` = :title, 
+                `publishHouse` = :house, 
+                `publishYear` = :year,
+                `annotation` = :annotation
+            WHERE `bookId` = :id';
+        }
+
+        $stmt = $this->pdo->prepare($query);
+
+        // if the book is new, we need to save its cover, else specify ID
+        if ($isNewBook) {
+            $stmt->bindParam(':cover', $this->cover, PDO::PARAM_STR);
+        } else {
+            $stmt->bindParam(':id', $this->bookId, PDO::PARAM_INT);
+        }
 
         $stmt->bindParam(':author', $this->authorId, PDO::PARAM_INT);
         $stmt->bindParam(':title', $this->title, PDO::PARAM_STR);
         $stmt->bindValue(':annotation', trim($this->annotation) ? trim($this->annotation) : null, PDO::PARAM_STR);
         $stmt->bindValue(':house', trim($this->publishHouse) ? trim($this->publishHouse) : null, PDO::PARAM_STR);
         $stmt->bindValue(':year', $this->publishYear ? $this->publishYear : null, PDO::PARAM_INT);
-        $stmt->bindParam(':cover', $this->cover, PDO::PARAM_STR);
         $result = $stmt->execute();
 
-        // save id of the last inserted row
-        $this->bookId = $this->pdo->lastInsertId();
+        if ($isNewBook) {
+            // save id of the last inserted row
+            $this->bookId = $this->pdo->lastInsertId();
+        }
 
         return [
             'status' => $result,
-            'message' => $result ? 'Информация успешно сохранена' : 'При сохранении книги произошла ошибка',
-            'bookId' => $this->bookId
+            'message' => $result ? 'Информация успешно сохранена' : 'При сохранении книги произошла ошибка'
         ];
+    }
+
+    public function getLastInsertId() {
+        return $this->bookId;
     }
 
     public function addBookCover($coverPath)
@@ -75,6 +99,7 @@ class Book
         $stmt = $this->pdo->prepare( 'UPDATE `books` SET 
                     `cover` = :cover
                 WHERE `bookId` = :id');
+
         $stmt->bindParam(':id', $this->bookId, PDO::PARAM_INT);
         $stmt->bindParam(':cover', $this->cover, PDO::PARAM_STR);
         $status = $stmt->execute();
@@ -87,22 +112,15 @@ class Book
     
     public function getAllBooks($needFav)
     {
-        $res = array();
         $andCondition = $needFav ? " AND books.isFavorite = 1" : "";
-        $i = 0;
-
         $query = "SELECT books.bookId, books.title, books.cover, books.pagesCount, 
                   authors.authorId, authors.name, authors.lastName 
                   FROM books, authors 
                   WHERE books.authorId = authors.authorId {$andCondition}";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
-        while($row = $stmt->fetch()) {
-            $res[$i] = $row;
-            $i++;
-        }
 
-        return $res;
+        return $stmt->fetchAll();
     }
 
     public function getBook()
@@ -126,37 +144,7 @@ class Book
         $stmt->bindParam(':num', $pageNum, PDO::PARAM_INT);
         $stmt->execute();
 
-        return $stmt->fetch(PDO::FETCH_LAZY);
-    }
-
-    /**
-     * @return array
-     * @throws ValidateException
-     */
-    public function editBook()
-    {
-        // we need to validate book data
-        $this->validateBook();
-
-        $stmt = $this->pdo->prepare('UPDATE `books` SET 
-                `authorId` = :author,
-                `title` = :title, 
-                `publishHouse` = :house, 
-                `publishYear` = :year,
-                `annotation` = :annotation
-            WHERE `bookId` = :id');
-        $stmt->bindParam(':id', $this->bookId, PDO::PARAM_INT);
-        $stmt->bindParam(':author', $this->authorId, PDO::PARAM_INT);
-        $stmt->bindParam(':title', $this->title, PDO::PARAM_STR);
-        $stmt->bindValue(':annotation', trim($this->annotation)? trim($this->annotation) : null, PDO::PARAM_STR);
-        $stmt->bindValue(':house', trim($this->publishHouse) ? trim($this->publishHouse) : null, PDO::PARAM_STR);
-        $stmt->bindValue(':year', $this->publishYear ? $this->publishYear : null, PDO::PARAM_INT);
-        $status = $stmt->execute();
-
-        return [
-            'status' => $status,
-            'message' => $status ? 'Книга успешно сохранена' : 'При обновлении книги произошла ошибка'
-        ];
+        return $stmt->fetch();
     }
 
     public function deleteBook()

@@ -36,35 +36,43 @@ class Author {
      */
     public function getAuthors()
     {
-        $res = array();
-        $i = 0; // db row counter
-
         $stmt = $this->pdo->prepare('SELECT 
             `authorId`, `name`, `lastName`, `birthYear`, `deceaseYear`, `description`
             FROM authors');
         $stmt->execute();
 
-        while($row = $stmt->fetch()) {
-            $res[$i] = $row;
-            $i++;
-        }
-
-        return $res;
+        return $stmt->fetchAll();
     }
 
     /**
      * @return array|string
      * @throws ValidateException
      */
-    public function addAuthor()
+    public function saveAuthor()
     {
         // we need to validate author data
         $this->validateAuthor();
 
-        $stmt = $this->pdo->prepare( 'INSERT INTO `authors` 
-            (`name`, `lastName`, `birthYear`, `deceaseYear`, `description`) VALUES 
-            (:name, :lastName, :birth, :decease, :description)' );
+        $isNewAuthor = !is_numeric($this->authorId);
+        if ($isNewAuthor) {
+            $query = 'INSERT INTO `authors` 
+                (`name`, `lastName`, `birthYear`, `deceaseYear`, `description`) VALUES 
+                (:name, :lastName, :birth, :decease, :description)';
+        } else {
+            $query = 'UPDATE `authors` SET 
+                `name` = :name, 
+                `lastName` = :lastName, 
+                `birthYear` = :birth,
+                `deceaseYear` = :decease,
+                `description` = :description
+            WHERE `authorId` = :id';
+        }
 
+        $stmt = $this->pdo->prepare($query);
+
+        if (!$isNewAuthor) {
+            $stmt->bindParam(':id', $this->authorId, PDO::PARAM_INT);
+        }
         $stmt->bindValue(':name', trim($this->name)? trim($this->name) : null, PDO::PARAM_STR);
         $stmt->bindParam(':lastName', trim($this->lastName), PDO::PARAM_STR);
         $stmt->bindParam(':birth', $this->birthYear, PDO::PARAM_INT);
@@ -72,43 +80,17 @@ class Author {
         $stmt->bindValue(':description', trim($this->description) ? trim($this->description) : null, PDO::PARAM_INT);
         $result = $stmt->execute();
 
+        if ($isNewAuthor) {
+            $this->authorId = $this->pdo->lastInsertId();
+        }
+
         return [
             'status' => $result,
             'message' => $result ? 'Информация успешно сохранена' : 'При сохранении автора произошла ошибка',
-            'authorId' => $this->pdo->lastInsertId()
+            'authorId' => $this->authorId
         ];
     }
 
-    /**
-     * @return array
-     * @throws ValidateException
-     */
-    public function editAuthor()
-    {
-        // we need to validate author data
-        $this->validateAuthor();
-
-        $stmt = $this->pdo->prepare( 'UPDATE `authors` SET 
-                `name` = :name, 
-                `lastName` = :lastName, 
-                `birthYear` = :birth,
-                `deceaseYear` = :decease,
-                `description` = :description
-            WHERE `authorId` = :id');
-        $stmt->bindParam(':id', $this->authorId, PDO::PARAM_INT);
-        $stmt->bindValue(':name', trim($this->name) ? trim($this->name) : null, PDO::PARAM_STR);
-        $stmt->bindParam(':lastName', $this->lastName, PDO::PARAM_STR);
-        $stmt->bindParam(':birth', $this->birthYear, PDO::PARAM_INT);
-        $stmt->bindValue(':decease', $this->deceaseYear ? $this->deceaseYear : null, PDO::PARAM_INT);
-        $stmt->bindValue(':description', trim($this->description) ? trim($this->description) : null, PDO::PARAM_INT);
-        $status = $stmt->execute();
-
-        return [
-            'status' => $status,
-            'message' => $status ? 'Информация успешно сохранена' : 'При сохранении автора произошла ошибка'
-        ];
-    }
-    
     public function deleteAuthor()
     {
         $stmt = $this->pdo->prepare( 'DELETE FROM `authors` 

@@ -56,15 +56,16 @@ app.controller('AuthorsController', ['$scope', 'authors', 'appUtils', function (
     authors
       .editAuthor($scope.selected)
       .then(function (response) {
-        $scope.reset();
-
         if (response.data.status) {
           $scope.authors[index] = angular.copy($scope.selected);
         } else {
           showErrorAlert('При сохранении данных произошла ошибка')
         }
+
+        $scope.reset();
       })
       .catch(function (error) {
+        $scope.reset();
         showErrorAlert(error.data.message)
       });
   };
