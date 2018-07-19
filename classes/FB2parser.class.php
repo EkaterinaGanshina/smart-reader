@@ -2,8 +2,10 @@
 
 class FB2parser
 {
-    // contacts
-    private const PAGE_LENGTH = 7000; // approximate symbols count for one page (including XML tags)
+    /**
+     * Approximate count of symbols per one page (including XML tags)
+     */
+    private const PAGE_LENGTH = 7000;
 
     /**
      * Function parses uploaded FB2, saves it to string variable and then saves splitted pages to DB

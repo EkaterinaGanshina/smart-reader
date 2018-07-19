@@ -112,11 +112,10 @@ class Book
     
     public function getAllBooks($needFav)
     {
-        $andCondition = $needFav ? " AND books.isFavorite = 1" : "";
+        $whereCondition = $needFav ? "WHERE books.isFavorite = 1" : "";
         $query = "SELECT books.bookId, books.title, books.cover, books.pagesCount, 
                   authors.authorId, authors.name, authors.lastName 
-                  FROM books, authors 
-                  WHERE books.authorId = authors.authorId {$andCondition}";
+                  FROM books JOIN authors USING (authorId) {$whereCondition}";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
 
