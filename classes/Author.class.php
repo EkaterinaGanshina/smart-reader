@@ -40,8 +40,17 @@ class Author {
             `authorId`, `name`, `lastName`, `birthYear`, `deceaseYear`, `description`
             FROM authors');
         $stmt->execute();
+        $result = $stmt->fetchAll();
 
-        return $stmt->fetchAll();
+        foreach ($result as &$author) {
+            foreach ($author as $key => &$value) {
+                $value = $value ?? '';
+            }
+            unset($value);
+        }
+        unset($author);
+
+        return $result;
     }
 
     /**

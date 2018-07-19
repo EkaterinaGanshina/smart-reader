@@ -1,0 +1,15 @@
+<?php
+
+$db_host = '';
+$db_name = 'smartreaderdb';
+$db_user = '';
+$db_pass = '';
+$charset = 'utf8';
+
+$settings = "mysql:host=$db_host;dbname=$db_name;charset=$charset";
+$options = array(
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+);
+
+$pdo = new PDO($settings, $db_user, $db_pass, $options);

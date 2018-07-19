@@ -89,7 +89,7 @@ class Book
         ];
     }
 
-    public function getLastInsertId() {
+    public function getId() {
         return $this->bookId;
     }
 
@@ -131,8 +131,14 @@ class Book
                                      FROM books, authors WHERE books.bookId = :id AND books.authorId = authors.authorId');
         $stmt->bindParam(':id', $this->bookId, PDO::PARAM_INT);
         $stmt->execute();
+        $result = $stmt->fetch();
 
-        return $stmt->fetch();
+        foreach ($result as $key => &$value) {
+            $value = $value ?? '';
+        }
+        unset($value);
+
+        return $result;
     }
     
     public function getPage($pageNum = 1)
@@ -155,30 +161,16 @@ class Book
             unlink($oldCover);
         }
 
-        // delete all the pages of the book
-        $stmt = $this->pdo->prepare('DELETE FROM `pages`
+        // delete the record about the book
+        $stmt = $this->pdo->prepare('DELETE FROM `books`
             WHERE `bookId` = :id');
         $stmt->bindParam(':id', $this->bookId, PDO::PARAM_INT);
-        $pagesResult = $stmt->execute();
+        $status = $stmt->execute();
 
-        if($pagesResult) {
-            // delete the record about the book
-            $stmt = $this->pdo->prepare('DELETE FROM `books`
-                WHERE `bookId` = :id');
-            $stmt->bindParam(':id', $this->bookId, PDO::PARAM_INT);
-            $bookResult = $stmt->execute();
-            $status = $pagesResult && $bookResult;
-
-            return [
-                'status' => $status,
-                'message' => $status ? 'Книга успешно удалена' : 'При удалении книги произошла ошибка'
-            ];
-        } else {
-            return [
-                'status' => false,
-                'message' => 'При удалении книги произошла ошибка'
-            ];
-        }
+        return [
+            'status' => $status,
+            'message' => $status ? 'Книга успешно удалена' : 'При удалении книги произошла ошибка'
+        ];
     }
 
     public function changeFav()
