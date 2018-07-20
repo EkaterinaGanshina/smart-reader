@@ -1,6 +1,6 @@
 # Smart Reader
-This AngularJS app lets users upload FB2 books and read them online. 
-[Demo: view Smart Reader on my site](http://ganshina.com/smart-reader/) 
+This AngularJS app lets users upload FB2 books and read them online.  
+[Demo: view Smart Reader on my site](http://smart-reader.ganshina.com/) 
 
 **Front-end**  
 

@@ -3,20 +3,21 @@
         <div class="user-alerter">
             <div class="alert alert-danger" ng-if="alerter.error">
                 {{ alerter.error }}
-                <div class="close" aria-label="close" ng-click="alerter.clearAlert()">&times;</div>
             </div>
-            <div class="alert alert-success" ng-if="alerter.success">
-                {{ alerter.success }}
-                <div class="close" data-dismiss="alert" aria-label="close" ng-click="alerter.clearAlert()">&times;</div>
+        </div>
+    </div>
+
+    <div class="col-xs-12">
+        <div class="search-bar">
+            <button class="btn btn-default add-author" ng-click="isCollapsed = !isCollapsed">Добавить автора</button>
+
+            <div class="search-wrapper">
+                <label for="search-authors">Поиск</label>
+                <input type="text" class="form-control search" ng-model="searchKeyword"
+                       placeholder="Начните ввод сиволов..." id="search-authors"/>
             </div>
         </div>
 
-        <button class="btn btn-default marg-top" ng-click="isCollapsed = !isCollapsed">Добавить автора</button>
-
-        <label class="marg-top pull-right">Поиск
-            <input type="text" class="form-control search" ng-model="searchKeyword"
-                   placeholder="Начните ввод сиволов..."/>
-        </label>
 
         <div ng-show="!isCollapsed" class="row">
             <div class="col-xs-12 col-lg-10 col-lg-offset-1">
@@ -84,7 +85,7 @@
     <td>{{ item.lastName }}</td>
     <td>{{ item.birthYear }}</td>
     <td>{{ item.deceaseYear ? item.deceaseYear : '&mdash;' }}</td>
-    <td>{{ item.description }}</td>
+    <td class="description">{{ item.description }}</td>
     <td class="actions">
         <button type="button" class="button" ng-click="editAuthor($index, item)" title="Редактировать автора">
             <span class="glyphicon glyphicon-edit"></span>

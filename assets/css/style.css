@@ -1,10 +1,13 @@
-html,
-body {
+html {
     font-size: 14px;
 }
 
 body {
     background-color: #fcfcfc;
+    font-size: 1rem;
+    min-width: 300px;
+    position: relative;
+    height: 100%;
 }
 
 a,
@@ -24,6 +27,10 @@ a:hover {
 }
 
 /* end of noscript styles */
+
+.page-wrapper {
+    margin-bottom: 50px;
+}
 
 .pointer {
     cursor: pointer;
@@ -68,7 +75,8 @@ a:hover {
 }
 
 .header .container {
-    padding: 10px 0 6px 0;
+    padding-top: 10px;
+    padding-bottom: 6px;
 }
 
 .header {
@@ -78,6 +86,14 @@ a:hover {
     height: 62px;
 }
 
+.navbar.opened {
+    height: auto;
+}
+
+.navbar.opened .collapse {
+    display: block;
+}
+
 .title {
     font-family: "Verdana", "Arial", sans-serif;
     margin: 0;
@@ -85,7 +101,12 @@ a:hover {
     line-height: 1.25;
 }
 
-.bookshelf {
+.search-bar {
+    margin-bottom: 20px;
+}
+
+.bookshelf,
+.authors {
     margin: 30px 0;
 }
 
@@ -201,7 +222,8 @@ a:hover {
 
 .chapter {
     font-size: 1.12rem;
-    padding: 10px 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .chapter p {
@@ -236,10 +258,6 @@ form .ng-dirty.ng-invalid {
 
 .noresize {
     resize: none;
-}
-
-.bookshelf .add-book {
-    margin: 0 0 0 2.5em;
 }
 
 .authors .button {
@@ -281,10 +299,19 @@ form .ng-dirty.ng-invalid {
     transition: color 0.3s;
 }
 
-.authors .search, .bookshelf .search {
+.authors .search,
+.bookshelf .search {
     width: 250px;
-    display: inline-block;
-    margin: 0 10px;
+    display: block;
+}
+
+.authors .search-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.authors .search-wrapper label {
+    margin-right: 8px;
 }
 
 .form-add-author {
@@ -338,7 +365,7 @@ form .ng-dirty.ng-invalid {
     align-items: center;
     padding-top: 15px;
     padding-bottom: 15px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 .page-controls .to-page {
@@ -351,7 +378,84 @@ form .ng-dirty.ng-invalid {
     margin: 0 10px;
 }
 
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 15px;
+    background: #fff;
+    height: 48px;
+}
+
+.footer a,
+.footer div {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.footer-wrapper {
+    height: 48px;
+    box-shadow: 0 -4px 4px -3px rgba(0, 0, 0, .15);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+@media screen and (max-width: 480px) {
+    .book-col {
+        width: 100%;
+    }
+
+    .bookshelf .add-book,
+    .authors .add-author {
+        margin: 0 0 10px;
+    }
+
+    .footer .copyright {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .page-controls {
+        flex-wrap: wrap;
+    }
+
+    .page-controls .to-page {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        margin-top: 15px;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .authors .description {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 480px) {
+    .search-bar {
+        display: flex;
+        justify-content: space-between;
+        align-content: flex-start;
+    }
+
+    .bookshelf .add-book,
+    .authors .add-author {
+        margin: 0;
+    }
+}
+
 @media screen and (min-width: 1366px) {
+    .bookshelf .add-book,
+    .authors .add-author {
+        margin: 0 0 0 2.5em;
+    }
+
     .book-col {
         width: 20%;
     }

@@ -1,8 +1,8 @@
 ﻿<div class="bookshelf">
     <div class="row">
-        <div class="col-xs-12 marg-bot">
+        <div class="col-xs-12 search-bar">
             <a class="button btn-default add-book" ng-href="#/books/upload">Загрузить книгу</a>
-            <input type="text" class="form-control pull-right search" ng-model="searchKeyword" placeholder="Поиск книг...">
+            <input type="text" class="form-control search" ng-model="searchKeyword" placeholder="Поиск книг...">
         </div>
     </div>
 
@@ -11,12 +11,12 @@
             <div class="user-alerter static">
                 <div class="alert alert-danger" ng-if="alerter.error">
                     {{ alerter.error }}
-                    <div class="close" aria-label="close" ng-click="alerter.clearAlert()">&times;</div>
                 </div>
             </div>
             <div class="text-center" ng-if="!books.length">Нет книг для отображения</div>
         </div>
-        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 book-col"
+
+        <div class="col-xs-6 col-md-4 col-lg-3 book-col"
              ng-repeat="book in books | filter: searchKeyword" ng-if="books.length">
             <div class="book-cover">
                 <a href="#/books/{{ book.bookId }}">
