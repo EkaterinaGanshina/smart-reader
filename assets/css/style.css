@@ -1,14 +1,13 @@
 html {
     font-size: 14px;
-    min-height: 100%;
 }
 
 body {
     background-color: #fcfcfc;
     font-size: 1rem;
     min-width: 300px;
-    position: relative;
-    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 a,
@@ -31,7 +30,7 @@ a:hover {
 
 .page-wrapper {
     position: relative;
-    margin-bottom: 50px;
+    min-height: calc(100vh - 50px);
 }
 
 .pointer {
@@ -403,10 +402,7 @@ form .ng-dirty.ng-invalid {
 .footer-wrapper {
     height: 48px;
     box-shadow: 0 -4px 4px -3px rgba(0, 0, 0, .15);
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
+    flex-basis: 48px;
 }
 
 @media screen and (max-width: 480px) {
