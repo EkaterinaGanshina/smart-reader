@@ -11,22 +11,27 @@
 </div>
 
 <div class="book-detail row">
-    <div class="col-sm-3 col-lg-4">
+    <div class="col-xs-12 col-sm-4 col-lg-3">
         <img ng-src='{{ book.cover }}'/>
     </div>
-    <div class="col-sm-9 col-lg-8">
+
+    <div class="col-xs-12 col-sm-8 col-lg-9 book-info">
         <h3 class="title">{{ book.title }}</h3>
         <p class="author">{{ book.name }} {{ book.lastName }}</p>
         <p ng-show="book.annotation">{{ book.annotation }}</p>
         <p ng-show="book.publishHouse">Издательство: {{ book.publishHouse }}</p>
         <p ng-show="book.publishYear">Год издания: {{ book.publishYear }}</p>
         <p>Количество страниц на сайте: {{ book.pagesCount }}</p>
+
         <div class="buttons">
             <a class="btn btn-primary read" href="#/books/{{ book.bookId }}/pages/1">Читать</a>
-            <a class="button pull-right pointer" ng-click="open()">Удалить</a>
-            <a class="button pull-right" ng-href="#/books/{{ book.bookId }}/edit" title="Редактировать описание">Редактировать</a>
-            <a class="button pull-right pointer" ng-if="book.isFavorite === '0'" ng-click="toggleFav()">Добавить в Избранное</a>
-            <a class="button pull-right pointer" ng-if="book.isFavorite === '1'" ng-click="toggleFav()">Удалить из Избранного</a>
+
+            <div class="buttons-right">
+                <a class="button pointer" ng-if="book.isFavorite === '0'" ng-click="toggleFav()">Добавить в Избранное</a>
+                <a class="button pointer" ng-if="book.isFavorite === '1'" ng-click="toggleFav()">Удалить из Избранного</a>
+                <a class="button" ng-href="#/books/{{ book.bookId }}/edit" title="Редактировать описание">Редактировать</a>
+                <a class="button pointer" ng-click="open()">Удалить</a>
+            </div>
         </div>
     </div>
 </div>

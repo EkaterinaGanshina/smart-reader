@@ -1,5 +1,6 @@
 html {
     font-size: 14px;
+    min-height: 100%;
 }
 
 body {
@@ -29,6 +30,7 @@ a:hover {
 /* end of noscript styles */
 
 .page-wrapper {
+    position: relative;
     margin-bottom: 50px;
 }
 
@@ -39,7 +41,7 @@ a:hover {
 .user-alerter {
     margin: 20px 0;
     position: absolute;
-    width: 100%;
+    width: calc(100% - 30px);
     z-index: 100;
 }
 
@@ -200,6 +202,9 @@ a:hover {
 
 .book-detail .buttons {
     margin-top: 30px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
 }
 
 .book-detail .buttons .button.pull-right {
@@ -229,6 +234,7 @@ a:hover {
 .chapter p {
     padding: 4px 0;
     margin-bottom: 3px;
+    line-height: 1.6;
 }
 
 .author {
@@ -429,11 +435,27 @@ form .ng-dirty.ng-invalid {
         justify-content: center;
         margin-top: 15px;
     }
+
+    .book-info {
+        margin: 20px 0;
+    }
+
+    .book-detail img {
+        max-width: 300px;
+    }
 }
 
 @media screen and (max-width: 992px) {
     .authors .description {
         display: none;
+    }
+
+    .book-detail .buttons .read {
+        margin-bottom: 15px;
+    }
+
+    .book-detail .buttons {
+        flex-wrap: wrap;
     }
 }
 
