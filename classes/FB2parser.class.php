@@ -61,8 +61,9 @@ class FB2parser
         $stmt->bindParam(':book', $id, PDO::PARAM_INT);
 
         // cut the book text into pages
-        $page = 1;
-        while (mb_strlen($bookText) > self::PAGE_LENGTH) {
+        $page = 0;
+        while (mb_strlen(trim($bookText)) > self::PAGE_LENGTH) {
+            $page += 1;
             $tempPage = mb_substr($bookText, 0, self::PAGE_LENGTH);
 
             $tempPageLen = mb_strlen($tempPage);
@@ -83,8 +84,6 @@ class FB2parser
             $stmt->bindParam(':page', $page, PDO::PARAM_INT);
             $stmt->bindParam(':content', $tempPage, PDO::PARAM_STR);
             $stmt->execute();
-
-            $page++;
         }
 
         // save the number of pages to DB

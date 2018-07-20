@@ -160,7 +160,7 @@ class Author {
 
         // check the author's decease year
         if ($this->deceaseYear) {
-            $isCorrect = 99 < $this->deceaseYear && $this->deceaseYear < date('Y');
+            $isCorrect = 99 < $this->deceaseYear && $this->deceaseYear <= date('Y');
 
             if (!$isCorrect) {
                 $errors['deceaseYear'] = 'Некорректный год смерти';

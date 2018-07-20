@@ -4,25 +4,32 @@ app.controller('PageController', ['$scope', 'books', '$routeParams', '$sce', '$w
     $scope.isOkBtnDisabled = true;
     $scope.alerter = Object.assign({}, appUtils.alert);
 
-    books
-      .getPage($routeParams.bookId, $routeParams.pageId)
-      .then(function (response) {
-        $scope.page = response.data.content;
-        $scope.pagesNumber = response.data.pagesCount;
-      })
-      .catch(function () {
-        $scope.alerter.showAlert('error', 'Не удалось загрузить страницу');
-      });
-
-    $scope.renderHtml = function (html) {
-      return $sce.trustAsHtml(html);
-    };
-
     // use these properties to create the URLs for buttons
     $scope.currentBookId = parseInt($routeParams.bookId);
     $scope.currentPage = parseInt($routeParams.pageId);
     $scope.nextPage = $scope.currentPage + 1;
     $scope.previousPage = $scope.currentPage - 1;
+    $scope.isPageNumberCorrect = false;
+
+    books
+      .getPage($routeParams.bookId, $routeParams.pageId)
+      .then(function (response) {
+        if (!response.data) {
+          $scope.alerter.showAlert('error', 'Не удалось загрузить страницу');
+        } else {
+          $scope.page = response.data.result.content;
+          $scope.pagesNumber = parseInt(response.data.result.pagesCount, 10);
+          $scope.isPageNumberCorrect = $scope.currentPage > 0 && $scope.currentPage <= $scope.pagesNumber;
+          console.log($scope.isPageNumberCorrect)
+        }
+      })
+      .catch(function (error) {
+        $scope.alerter.showAlert('error', error.data.message);
+      });
+
+    $scope.renderHtml = function (html) {
+      return $sce.trustAsHtml(html);
+    };
 
     $scope.checkPageNumber = function () {
       var page = $scope.userPage.trim();

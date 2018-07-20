@@ -139,17 +139,38 @@ class Book
 
         return $result;
     }
-    
+
+    /**
+     * @param int $pageNum
+     * @return array
+     * @throws ValidateException
+     */
     public function getPage($pageNum = 1)
     {
+        // check if the requested page exists
+        $stmt = $this->pdo->prepare('SELECT books.bookId, books.pagesCount 
+                                     FROM books 
+                                     WHERE books.bookId = :id');
+        $stmt->bindParam(':id', $this->bookId, PDO::PARAM_INT);
+        $stmt->execute();
+        $check = $stmt->fetch();
+
+        if ($pageNum > $check['pagesCount']) {
+            throw new ValidateException('Запрошенной страницы не существует');
+        }
+
         $stmt = $this->pdo->prepare('SELECT books.bookId, books.pagesCount, pages.content 
                                      FROM books, pages
                                      WHERE books.bookId = :id AND pages.bookId = :id AND pages.PageNumber = :num');
         $stmt->bindParam(':id', $this->bookId, PDO::PARAM_INT);
         $stmt->bindParam(':num', $pageNum, PDO::PARAM_INT);
         $stmt->execute();
+        $result = $stmt->fetch();
 
-        return $stmt->fetch();
+        return [
+            'result' => $result,
+            'message' => $result ? 'Страница успешно загружена' : 'При загрузке страницы произошла ошибка'
+        ];
     }
 
     public function deleteBook()

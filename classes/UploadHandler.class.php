@@ -7,6 +7,7 @@ class UploadHandler
 
     /**
      * Function handles upload of the new book and its cover
+     *
      * @param array $data New book data
      * @param array $files Array with files to upload. Its first element must be fb2 file of the book,
      * the second file is its cover
@@ -82,6 +83,7 @@ class UploadHandler
 
     /**
      * Function calls the editing method for the book and also checks if new cover was added
+     *
      * @param array $data Edited book data
      * @param array $file New cover for the edited book
      * @param PDO $pdo DB driver

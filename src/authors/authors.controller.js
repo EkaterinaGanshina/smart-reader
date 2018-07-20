@@ -47,6 +47,12 @@ app.controller('AuthorsController', ['$scope', 'authors', 'appUtils', function (
       });
   };
 
+  // button "Cancel" while adding the author
+  $scope.cancelAdd = function() {
+    $scope.newAuthor = {};
+    $scope.isCollapsed = true;
+  };
+
   $scope.editAuthor = function ($index, author) {
     $scope.selected = angular.copy(author);
     $scope.authorIndex = $index;

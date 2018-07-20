@@ -1,10 +1,9 @@
 <div class="row">
-    <div class="col-xs-12 col-sm-offset-1 col-sm-10 col-lg-offset-2 col-lg-8">
-        <a class="button nav-btn" ng-href="#/books/{{ currentBookId }}">Назад</a>
+    <div class="col-xs-12 col-sm-offset-1 col-sm-10 col-lg-offset-2 col-lg-8 marg-top">
+        <a class="button" ng-href="#/books/{{ currentBookId }}">На страницу книги</a>
         <div class="user-alerter static">
             <div class="alert alert-danger" ng-if="alerter.error">
                 {{ alerter.error }}
-                <div class="close" aria-label="close" ng-click="alerter.clearAlert()">&times;</div>
             </div>
         </div>
     </div>
@@ -15,13 +14,15 @@
 </div>
 
 <div class="row">
-    <p class="col-xs-12 text-center marg-top marg-bot">Страница <strong>{{ currentPage }}</strong></p>
+    <p class="col-xs-12 text-center marg-top marg-bot" ng-if="isPageNumberCorrect">
+        Страница <strong>{{ currentPage }}</strong>
+    </p>
 
     <div class="col-xs-12 col-sm-offset-1 col-sm-10 col-lg-offset-2 col-lg-8 page-controls">
-        <a class="button nav-btn" ng-href="#/books/{{ currentBookId }}/pages/{{ previousPage }}"
-           ng-if="previousPage > 1">Предыдущая</a>
-        <a class="button nav-btn" ng-href="#/books/{{ currentBookId }}/pages/{{ nextPage }}"
-           ng-show="nextPage < pagesNumber">Следующая</a>
+        <a class="button" ng-href="#/books/{{ currentBookId }}/pages/{{ previousPage }}"
+           ng-if="isPageNumberCorrect && previousPage >= 1">Предыдущая</a>
+        <a class="button" ng-href="#/books/{{ currentBookId }}/pages/{{ nextPage }}"
+           ng-if="isPageNumberCorrect && nextPage < pagesNumber">Следующая</a>
 
         <div class="to-page">
             <span>Перейти на страницу </span>
@@ -29,7 +30,7 @@
             <button type="button" ng-click="goToPage()" class="btn btn-default" ng-disabled="isOkBtnDisabled">ОК</button>
         </div>
 
-        <a class="button nav-btn" ng-href="#/books/{{ currentBookId }}/pages/{{ pagesNumber - 1 }}"
-           ng-hide="currentPage == pagesNumber-1">В конец</a>
+        <a class="button" ng-href="#/books/{{ currentBookId }}/pages/{{ pagesNumber }}"
+           ng-if="isPageNumberCorrect && currentPage < pagesNumber">В конец</a>
     </div>
 </div>
