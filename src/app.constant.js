@@ -1,5 +1,5 @@
 app.constant('appConstants', {
-  ajaxUrl: '/actions.php',
+  ajaxUrl: 'actions.php',
 });
 
 app.constant('appUtils', {
