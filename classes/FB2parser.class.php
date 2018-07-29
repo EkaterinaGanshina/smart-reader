@@ -66,23 +66,30 @@ class FB2parser
             $page += 1;
             $tempPage = mb_substr($bookText, 0, self::PAGE_LENGTH);
 
-            $tempPageLen = mb_strlen($tempPage);
-
             // save remaining text
-            $remain = mb_substr($bookText, $tempPageLen - 1);
+            $remain = mb_substr($bookText, self::PAGE_LENGTH);
 
             // find text before closing tags p, br or cite
-            preg_match_all('#.*(<\/p>|<\/cite>|<br\/>)?#', $remain, $matches);
+            preg_match_all('/.*(<\/p>|<\/cite>|<br\/>)/U', $remain, $matches);
             $additional = $matches[0][0];
             $tempPage .= $additional;
 
             $additionalLen = mb_strlen($additional);
             // remove excluded page from the book text
-            $bookText = mb_substr($bookText, $tempPageLen + $additionalLen - 1);
+            $bookText = mb_substr($bookText, self::PAGE_LENGTH + $additionalLen - 1);
 
             // save the page to DB
             $stmt->bindParam(':page', $page, PDO::PARAM_INT);
             $stmt->bindParam(':content', $tempPage, PDO::PARAM_STR);
+            $stmt->execute();
+        }
+
+        // check the remaining text of the book (last page)
+        $remainTextLength = mb_strlen(trim($bookText));
+        if ($remainTextLength > 0 && $remainTextLength <= self::PAGE_LENGTH) {
+            $page += 1;
+            $stmt->bindParam(':page', $page, PDO::PARAM_INT);
+            $stmt->bindParam(':content', $bookText, PDO::PARAM_STR);
             $stmt->execute();
         }
 
