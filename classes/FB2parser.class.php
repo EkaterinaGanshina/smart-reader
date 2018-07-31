@@ -24,7 +24,7 @@ class FB2parser
 
         // book parser
         while ($reader->read()) {
-            // find the first <section> document
+            // find the first <section> tag
             if (($reader->nodeType == XMLReader::ELEMENT) and ($reader->localName == 'section')) {
                 $content = $reader->readInnerXml();
 
@@ -76,7 +76,7 @@ class FB2parser
 
             $additionalLen = mb_strlen($additional);
             // remove excluded page from the book text
-            $bookText = mb_substr($bookText, self::PAGE_LENGTH + $additionalLen - 1);
+            $bookText = mb_substr($bookText, self::PAGE_LENGTH + $additionalLen);
 
             // save the page to DB
             $stmt->bindParam(':page', $page, PDO::PARAM_INT);
